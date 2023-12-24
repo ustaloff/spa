@@ -1,77 +1,151 @@
-import {createWebHistory, createRouter} from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 import store from '@/store'
 
-/* Guest Component */
+/* Layouts */
+const Main = () => import('@/components/main/Layout.vue')
+const Profile = () => import('@/components/profile/Layout.vue')
+const Dashboard = () => import('@/components/dashboard/Layout.vue')
+
+/* Guest Components */
 const Login = () => import('@/components/Login.vue')
 const Register = () => import('@/components/Register.vue')
-/* Guest Component */
 
-/* Layouts */
-const Layout = () => import('@/components/layouts/Default.vue')
-/* Layouts */
+const Index = () => import('@/components/Index.vue')
+const Items = () => import('@/components/Items.vue')
 
-/* Authenticated Component */
-const Dashboard = () => import('@/components/Dashboard.vue')
-/* Authenticated Component */
+/* Profile Components */
+const UserItems = () => import('@/components/UserItems.vue')
 
 
 const routes = [
     {
-        name: "login",
-        path: "/login",
-        component: Login,
-        meta: {
-            middleware: "guest",
-            title: `Login`
-        }
+        path: '/.*',
+        component: Main,
+        meta: {},
+        children: [
+            {
+                name: 'index',
+                path: '/',
+                component: Index,
+                meta: {
+                    title: `Main`,
+                    middleware: 'guest'
+                }
+            },
+            {
+                name: 'login',
+                path: '/login',
+                component: Login,
+                meta: {
+                    title: `Login`,
+                    middleware: 'guest'
+                }
+            },
+            {
+                name: 'register',
+                path: '/register',
+                component: Register,
+                meta: {
+                    title: `Register`,
+                    middleware: 'guest'
+                }
+            },
+            {
+                name: 'items',
+                path: '/items',
+                //alias: ['/products/:service', '/products/:service/:type'],
+                component: Items,
+                meta: {
+                    title: `Product List`,
+                    middleware: 'guest'
+                },
+                children: [
+                    {
+                        name: 'items',
+                        path: '/items/:service',
+                        component: Items,
+                        meta: {
+                            title: `Product List 2`
+                        }
+                    },
+                ]
+            },
+        ]
     },
     {
-        name: "register",
-        path: "/register",
-        component: Register,
+        path: '/profile',
+        component: Profile,
         meta: {
-            middleware: "guest",
-            title: `Register`
-        }
-    },
-    {
-        path: "/",
-        component: Layout,
-        meta: {
-            middleware: "auth"
+            middleware: 'auth'
+        },
+        beforeEnter: (to, from, next) => {
+            if (store.state.auth.authenticated) {
+                return next()
+            }
+
+            next({name: 'index'})
         },
         children: [
             {
-                name: "dashboard",
-                path: '/',
-                component: Dashboard,
+                name: 'profile',
+                path: '/profile',
+                component: Index,
                 meta: {
-                    title: `Dashboard`
+                    title: `Main`,
+                    middleware: 'auth'
                 }
-            }
+            },
+            {
+                name: 'userItems',
+                path: '/profile/items',
+                component: UserItems,
+                meta: {
+                    title: `Main`,
+                    middleware: 'auth'
+                }
+            },
         ]
-    }
-]
+    },
+    {
+        path: '/dashboard',
+        component: Dashboard,
+        meta: {
+            middleware: 'admin'
+        },
+        beforeEnter: (to, from, next) => {
+            let isLogged = store.state.auth.authenticated,
+                userRole = isLogged && store.state.auth.user.role,
+                isAdmin = ['admin', 'super'].includes(userRole)
+
+            if (isLogged && isAdmin) {
+                return next()
+            }
+
+            next({name: 'index'})
+        },
+        children: [
+            {
+                name: 'dashboard',
+                path: '/dashboard',
+                component: Index,
+                meta: {
+                    title: `Dashboard`,
+                    middleware: 'admin'
+                },
+            },
+        ]
+    },
+];
 
 const router = createRouter({
     history: createWebHistory(),
-    routes, // short for `routes: routes`
+    routes
 })
 
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title
-    if (to.meta.middleware == "guest") {
-        if (store.state.auth.authenticated) {
-            next({name: "dashboard"})
-        }
-        next()
-    } else {
-        if (store.state.auth.authenticated) {
-            next()
-        } else {
-            next({name: "login"})
-        }
-    }
+    store.state.bar = false
+    next()
 })
 
 export default router

@@ -6,15 +6,11 @@ import path from 'path';
 export default defineConfig({
     plugins: [
         vue(),
-        laravel([
-            'resources/sass/app.scss',
-            'resources/js/app.js',
-        ]),
-    ],
+        laravel(['resources/sass/app.scss', 'resources/js/app.js'])],
     resolve: {
         alias: {
             '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
-            '@': path.resolve(__dirname, 'resources/js'),
+            '@': path.resolve(__dirname, 'resources/js')
         }
     },
 });

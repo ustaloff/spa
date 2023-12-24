@@ -14,6 +14,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')
+    ->get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+//Route::group(['api'], function () {
+Route::get('/get-base-data', BaseController::class . '@getBaseData');
+Route::get('/get-items', BaseController::class . '@getItems');
+//});
+
+
+Route::group(['prefix' => 'profile'], function () {
+    //Route::get('/get-base-data', BaseController::class . '@getBaseData');
+    Route::get('/get-items', ProfileController::class . '@getItems');
 });
