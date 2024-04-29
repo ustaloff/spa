@@ -84,7 +84,7 @@
                 <li class="nav-item">
                     <router-link :to="`/items`" class="nav-link">Products</router-link>
                 </li>
-                <li class="nav-item" v-for="(item, index) in this.baseData">
+                <li class="nav-item" v-for="(item, index) in baseData">
                     <router-link :to="`/items/${item.name}`" class="nav-link">{{ item.name }}</router-link>
                 </li>
                 <li class="nav-item" v-if="!user.name">
@@ -99,7 +99,7 @@
                 <li class="nav-item" v-if="user.name">
                     <router-link :to="{name: 'dashboard'}" class="nav-link">Dashboard</router-link>
                 </li>
-                <li class="nav-item" v-if="this.user.name">
+                <li class="nav-item" v-if="user.name">
                     <a href="javascript:void(0)" @click="this.logout" class="nav-link">Logout {{ user.name }} :
                         {{ user.role }}</a>
                 </li>
@@ -120,7 +120,7 @@
 <script setup>
 import {defineAsyncComponent} from 'vue';
 
-const ThemeSwitcher = defineAsyncComponent(() => import('@/components/ThemeSwitcher.vue'));
+const ThemeSwitcher = defineAsyncComponent(() => import('@/components/common/ThemeSwitcher.vue'));
 </script>
 
 <script>
@@ -176,7 +176,7 @@ export default {
             await axios.post('/logout').then(({data}) => {
                 //this['auth/logout']();
                 this.signOut();
-                //this.$router.push({name: "index"})
+                this.$router.push({name: 'index'})
             })
         },
 
@@ -203,5 +203,5 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-@import "../../sass/components/top"
+@import "resources/sass/components/top"
 </style>

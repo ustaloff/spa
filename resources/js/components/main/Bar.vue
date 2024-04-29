@@ -7,7 +7,7 @@
 <script setup>
 import {defineAsyncComponent} from 'vue';
 
-const ThemeSwitcher = defineAsyncComponent(() => import('@/components/ThemeSwitcher.vue'));
+//const ThemeSwitcher = defineAsyncComponent(() => import('@/components/ThemeSwitcher.vue'));
 </script>
 
 <script>
@@ -87,5 +87,5 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-@import "../../sass/components/bar"
+@import "../../../sass/components/bar"
 </style>

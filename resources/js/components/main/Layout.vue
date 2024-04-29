@@ -5,6 +5,62 @@
 
     <main class="">
         MAIN
+
+        <div>
+            dsfsdfsdfsdfsdfsdfdsf<br/>
+            dsfsdfsdfsdfsdfsdfdsf<br/>
+            dsfsdfsdfsdfsdfsdfdsf<br/>
+            dsfsdfsdfsdfsdfsdfdsf<br/>
+            dsfsdfsdfsdfsdfsdfdsf<br/>
+            dsfsdfsdfsdfsdfsdfdsf<br/>
+            dsfsdfsdfsdfsdfsdfdsf<br/>
+            dsfsdfsdfsdfsdfsdfdsf<br/>
+            dsfsdfsdfsdfsdfsdfdsf<br/>
+            dsfsdfsdfsdfsdfsdfdsf<br/>
+            dsfsdfsdfsdfsdfsdfdsf<br/>
+            dsfsdfsdfsdfsdfsdfdsf<br/>
+            dsfsdfsdfsdfsdfsdfdsf<br/>
+            dsfsdfsdfsdfsdfsdfdsf<br/>
+            dsfsdfsdfsdfsdfsdfdsf<br/>
+            dsfsdfsdfsdfsdfsdfdsf<br/>
+            dsfsdfsdfsdfsdfsdfdsf<br/>
+            dsfsdfsdfsdfsdfsdfdsf<br/>
+            dsfsdfsdfsdfsdfsdfdsf<br/>
+            dsfsdfsdfsdfsdfsdfdsf<br/>
+            dsfsdfsdfsdfsdfsdfdsf<br/>
+        </div>
+
+        <ul>
+            <li class="">aaaaaaaa</li>
+            <li class="t">aaaaaaaa</li>
+            <li class="t">aaaaaaaa</li>
+            <li class="t">aaaaaaaa</li>
+            <li class="t">aaaaaaaa</li>
+            <li class="t">aaaaaaaa</li>
+            <li class="t">aaaaaaaa</li>
+            <li class="t">aaaaaaaa</li>
+            <li class="t">aaaaaaaa</li>
+            <li class="t">aaaaaaaa</li>
+
+        </ul>
+
+        <ul>
+            <li>aaaaaaaa</li>
+        </ul>
+
+        <dl>
+            <dt>gigogne</dt>
+            <dd>
+                <dl>
+                    <dt>fusée</dt>
+                    <dd>multistage rocket</dd>
+                    <dt>table</dt>
+                    <dd>nest of tables</dd>
+                </dl>
+            </dd>
+        </dl>
+
+
         <router-view/>
     </main>
 
@@ -15,61 +71,12 @@
 import {defineAsyncComponent} from 'vue';
 
 const Top = defineAsyncComponent(() => import('@/components/Top.vue'));
-const Bar = defineAsyncComponent(() => import('@/components/Bar.vue'));
 const Foo = defineAsyncComponent(() => import('@/components/Foo.vue'));
+const Bar = defineAsyncComponent(() => import('@/components/main/Bar.vue'));
 </script>
 
 <script>
-import {mapActions, mapGetters} from 'vuex'
-import fixVH from '@/mixins/fix-vh'
-
 export default {
     name: "layout",
-
-    mixins: [fixVH],
-
-    data() {
-        return {
-            bar: false,
-            //user:this.$store.state.auth.user
-        }
-    },
-
-    created() {
-        this.getBaseData();
-
-        /*axios.get('http://localhost:8000/api/posts')
-            .then(response => {
-                console.log('response', response);
-            });*/
-        /*axios.get('api/posts')
-            .then(response => {
-                console.log('response', response);
-            });*/
-    },
-
-    computed: {
-        user() {
-            return this.$store.state.auth.user;
-        },
-    },
-
-    methods: {
-        ...mapActions({
-            signOut: "auth/logout",
-            getBaseData: 'getBaseData'
-        }),
-
-        /*...mapActions({
-            signOut: "auth/logout"
-        }),*/
-
-        async logout() {
-            await axios.post('/logout').then(({data}) => {
-                this.signOut()
-                this.$router.push({name: "index"})
-            })
-        }
-    }
 }
 </script>

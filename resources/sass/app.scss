@@ -3,57 +3,79 @@
 
 // Variables
 @import 'variables';
+@import '_mixins';
 
 // Bootstrap
 //@import 'bootstrap/scss/bootstrap';
 
+// Theme
+//@import 'themes/aura/aura-light/blue/theme';
+//@import 'themes/mytheme/theme';
+
 * {
-    margin: 0;
-    padding: 0;
-    font: inherit;
     box-sizing: border-box;
     scrollbar-width: thin;
-    scrollbar-color: yellow green;
+
+    @include themed($themes) {
+        scrollbar-color: t('scrollbarTrackColor') t('scrollbarThumbColor');
+    }
 
     &::before, &::after {
         box-sizing: border-box;
     }
 
     &::-webkit-scrollbar {
-        width: 5px;
+        @include themed($themes) {
+            width: t('scrollbarWidth');
+        }
     }
 
-    &::-webkit-scrollbar-track {
-        background: blue;
+    ::-webkit-scrollbar-track {
+        @include themed($themes) {
+            background: t('scrollbarThumbColor');
+        }
     }
 
-    &::-webkit-scrollbar-thumb {
-        background: red;
+    ::-webkit-scrollbar-thumb {
+        @include themed($themes) {
+            background: t('scrollbarTrackColor');
+        }
     }
 
-    &::-webkit-scrollbar-thumb:hover {
-        background: #b30000;
+    ::-webkit-scrollbar-thumb:hover {
+        @include themed($themes) {
+            background: t('scrollbarTrackHoverColor');
+        }
     }
 }
 
 html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: calc(var(--vh, 1vh) * 100);
     font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-size: 14px;
     line-height: 1.5;
-    color: var(--font-color);
     text-rendering: optimizeSpeed;
     -webkit-text-size-adjust: 100%;
+    overflow: hidden auto;
 
     &:focus-within {
         scroll-behavior: smooth;
     }
-}
 
-body {
-    width: 100%;
-    height: calc(var(--vh, 1vh) * 100);
-    overflow: hidden auto;
+    @include themed($themes) {
+        color: t('bodyColor');
+        background: t('bodyBg');
+    }
 }
 
 img, svg, picture {
@@ -77,7 +99,6 @@ input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 1000px white inset !important;
 }
 
-/* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
 @media (prefers-reduced-motion: reduce) {
     html:focus-within {
         scroll-behavior: auto;
@@ -91,13 +112,11 @@ input:-webkit-autofill {
     }
 }
 
-/* general styling */
 #app {
     height: 100%;
     padding-top: 70px;
     display: flex;
     flex-direction: column;
-    //justify-content: space-between;
 }
 
 main {
@@ -112,62 +131,61 @@ main {
     margin-inline: auto;
 }
 
-/*********** Baseline, reset styles ***********/
-input[type="range"] {
-    -webkit-appearance: none;
-    appearance: none;
-    background: transparent;
-    cursor: pointer;
-    width: 25rem;
+////////////////////////////////////////////////////////////////////
+//https://stackoverflow.com/questions/2717480/css-selector-for-first-element-with-class
+main ul > * + * {
+    color: red;
 }
 
-/* Removes default focus */
-input[type="range"]:focus {
-    outline: none;
+main ul > :not(:first-child) {
+    //color: red;
+
 }
 
-/******** Chrome, Safari, Opera and Edge Chromium styles ********/
-/* slider track */
-input[type="range"]::-webkit-slider-runnable-track {
-    background-color: #add8e6;
-    border-radius: 0.5rem;
-    height: 0.5rem;
+main ul {
+    list-style-image: url('data:image/svg+xml,<svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.41521 1.29359C9.84841 0.377675 11.1516 0.377673 11.5848 1.29358L13.6066 5.56831C13.7774 5.92937 14.1166 6.18181 14.5115 6.24168L19.1141 6.93956C20.0825 7.08639 20.4766 8.26886 19.7899 8.96728L16.3958 12.4195C16.1273 12.6926 16.0053 13.0775 16.0674 13.4555L16.8597 18.276C17.022 19.2633 15.9757 20.0039 15.0985 19.5227L11.0772 17.3166C10.7177 17.1194 10.2823 17.1194 9.92284 17.3166L5.90152 19.5227C5.02426 20.0039 3.97796 19.2633 4.14025 18.276L4.93258 13.4555C4.9947 13.0775 4.87269 12.6926 4.60418 12.4195L1.2101 8.96728C0.523448 8.26886 0.917547 7.08639 1.88592 6.93956L6.48852 6.24168C6.88342 6.18181 7.22264 5.92937 7.39341 5.56831L9.41521 1.29359Z" fill="%23926D20"/></svg>');
+
+    li {
+        &::marker {
+            //color: green;
+            //content: '+';
+        }
+    }
+
+    :only-child {
+        color: blue;
+    }
+
+    /*li.t:not(.t ~ .t) {
+      color: yellow !important;
+    }*/
+
+    li.t:not(.t + .t) {
+        background: blue !important;
+
+    }
+
+    li.t:not(.t + .t) ~ .t {
+        border: 5px solid red;
+        background: red;
+    }
 }
 
-/* slider thumb */
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none; /* Override default look */
-    appearance: none;
-    margin-top: -4px; /* Centers thumb on the track */
-    background-color: #808080;
-    border-radius: 0.5rem;
-    height: 1rem;
-    width: 1rem;
+
+dl dt:first-of-type {
+    color: red
 }
 
-input[type="range"]:focus::-webkit-slider-thumb {
-    outline: 3px solid #808080;
-    outline-offset: 0.125rem;
+.noClick {
+    pointer-events: none;
 }
 
-/*********** Firefox styles ***********/
-/* slider track */
-input[type="range"]::-moz-range-track {
-    background-color: #add8e6;
-    border-radius: 0.5rem;
-    height: 0.5rem;
-}
+/////////////////////////////////
+//https://9elements.github.io/fancy-border-radius/#54.39.42.34--.
+//https://cloudfour.com/thinks/the-math-behind-nesting-rounded-corners/
 
-/* slider thumb */
-input[type="range"]::-moz-range-thumb {
-    background-color: #808080;
-    border: none; /*Removes extra border that FF applies*/
-    border-radius: 0.5rem;
-    height: 1rem;
-    width: 1rem;
-}
-
-input[type="range"]:focus::-moz-range-thumb {
-    outline: 3px solid #808080;
-    outline-offset: 0.125rem;
+:root {
+    --outer-radius: 1em;
+    --padding: 0.5em;
+    --inner-radius: calc(var(--outer-radius) - var(--padding));
 }

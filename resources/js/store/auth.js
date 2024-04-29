@@ -1,4 +1,7 @@
 import axios from 'axios';
+//import {useRoute, useRouter} from 'vue-router'
+
+//const router = useRouter();
 
 export default {
     namespaced: true,

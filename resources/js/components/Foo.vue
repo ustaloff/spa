@@ -12,5 +12,5 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-@import "../../sass/components/foo"
+@import "resources/sass/components/foo"
 </style>
