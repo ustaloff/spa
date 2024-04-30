@@ -1,7 +1,7 @@
 <template>
     <header class="header">
-        <nav class="">
-            <button class="hamburger" :area-expanded="bar" @click="$store.commit('SET_BAR_EXPANDED', !bar)">
+        <nav class=""><!--_click="$store.commit('SET_BAR_EXPANDED', !bar)"-->
+            <button class="hamburger" :area-expanded="bar" @click="showSidebar('sss')">
                 <div></div>
             </button>
 
@@ -121,6 +121,15 @@
 import {defineAsyncComponent} from 'vue';
 
 const ThemeSwitcher = defineAsyncComponent(() => import('@/components/common/ThemeSwitcher.vue'));
+
+import {defineEmits, defineProps} from 'vue'
+
+const emit = defineEmits(['showSidebar'])
+
+const showSidebar = (s) => {
+    console.log('top', s);
+    emit('showSidebar')
+}
 </script>
 
 <script>

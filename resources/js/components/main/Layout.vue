@@ -1,9 +1,18 @@
 <template>
-    <component :is="Top"/>
+    <component :is="Top" @showSidebar="showSidebar"/>
 
-    <component :is="Bar"/>
+    <component :is="Bar" :showSidebar="bar"/>
 
     <main class="">
+        <Button label="Primary" />
+        <Button label="Secondary" severity="secondary" />
+        <Button label="Success" severity="success" />
+        <Button label="Info" severity="info" />
+        <Button label="Warning" severity="warning" />
+        <Button label="Help" severity="help" />
+        <Button label="Danger" severity="danger" />
+        <Button label="Contrast" severity="contrast" />
+
         MAIN
 
         <div>
@@ -73,6 +82,17 @@ import {defineAsyncComponent} from 'vue';
 const Top = defineAsyncComponent(() => import('@/components/Top.vue'));
 const Foo = defineAsyncComponent(() => import('@/components/Foo.vue'));
 const Bar = defineAsyncComponent(() => import('@/components/main/Bar.vue'));
+
+import {ref} from 'vue';
+let bar = ref(false);
+//let bar = false;
+
+
+let showSidebar = () => {
+    console.log('main1', bar);
+    bar.value = true
+    console.log('main2', bar);
+}
 </script>
 
 <script>
